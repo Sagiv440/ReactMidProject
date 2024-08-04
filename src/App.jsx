@@ -3,6 +3,7 @@ import './App.css';
 import UserComp from './Comp/User';
 import { getAll, updateItem } from './utils';
 import AddNewUser from './Comp/AddNewUser';
+import Tasks from './Comp/Tasks';
 
 const USERS_URL = "https://jsonplaceholder.typicode.com/users";
 const POSTS_URL = "https://jsonplaceholder.typicode.com/posts";
@@ -15,6 +16,9 @@ function App() {
 
   const [state, setState] = useState("");
   const [search, setSearch] = useState("");
+
+  const [curUser, setCurUser] = useState();
+  const [curTodos,setCurTodos] = useState([]);
 
   useEffect(()=>{
     const getUsers = async()=>{
@@ -81,6 +85,31 @@ function App() {
       setUsers(uss);
     }
 
+    const UpdateTask=(id, task)=>
+      {
+        let tss = [...todos];
+        for(let i = 0; i < tss.length; i++)
+        {
+          if(tss[i].id == id)
+          {
+            tss[i] = task; 
+            break;
+          }
+        }
+        updateItem(TODOS_URL, id, task)
+        
+        setTodos(tss);
+
+        setCurTodos(todos.filter((e) => e.userId == task.userId));
+      }
+
+    const TaskAndPosts=(user)=>
+    {
+      setCurUser(user);
+      setCurTodos(todos.filter((e) => e.userId == user.id));
+      setState("TasksAndPosts")
+    }
+
     function checkTodo(id)
     {
         const mytodos = todos.filter((e) => e.userId == id)
@@ -99,8 +128,11 @@ function App() {
       switch(state)
       {
         case "AddNew":
-          return(<AddNewUser add={AddUser} cancel={Cancel}/>);
-        default:
+          return(<AddNewUser key={'1'} add={AddUser} cancel={Cancel}/>);
+        
+        case "TasksAndPosts":
+          return(<><Tasks key={'2'} user={curUser} tasks={curTodos} mark={UpdateTask}/></>)
+          default:
           return(<></>);
       }
       return(<></>)
@@ -116,7 +148,7 @@ function App() {
           {
             serchedUsers.map((user)=>{
               return(<div class={checkTodo(user.id)} style={{ border: "3px solid", width: "95%" }}>
-                <UserComp key={user.id} user={ user } dalete={ DeleteUser } update={ UpdateUser }/>
+                <UserComp key={user.id} user={ user } dalete={ DeleteUser } update={ UpdateUser } tp={TaskAndPosts}/>
               </div>)
             })
           }

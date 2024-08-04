@@ -1,7 +1,7 @@
 import { useState ,useEffect } from "react";
 import OtherData from "./OtherData";
 
-const UserComp = ({ user , dalete ,update }) => {
+const UserComp = ({ user , dalete ,update , tp }) => {
     const [showAdd, setShowAdd] = useState(false);
     const [newUser, setNewUser] = useState();
 
@@ -21,7 +21,7 @@ const UserComp = ({ user , dalete ,update }) => {
     
     return (
         <>
-            ID: {user.id}<br />
+            <a onClick={()=>tp(user)}>ID:</a>{user.id}<br />
             Name: <input type="text" defaultValue={user.name} onChange={(e) => setNewUser({...newUser, name: e.target.value})} /><br />
             Email: <input type="text" defaultValue={user.email} onChange={(e) => setNewUser({...newUser, email: e.target.value})} /><br />
             <button onClick={() => setShowAdd(!showAdd)}>Other Data</button>

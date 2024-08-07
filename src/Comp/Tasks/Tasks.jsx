@@ -2,9 +2,10 @@ import { useState } from "react";
 import TasksView from "./TasksView";
 import TaskAdd from "./TaskAdd";
 
+//Task component for handling the user tasks
 const Tasks =({user, tasks , mark})=>
 {
-    const [state, setState]  = useState("View")
+    const [state, setState]  = useState("View") // selector between add new tasks and view tasks.
 
     return(
         <>

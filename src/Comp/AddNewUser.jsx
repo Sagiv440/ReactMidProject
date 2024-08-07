@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+// Component for handling creating new users
 const AddNewUser = ({add, cancel})=>
 {
     const [newUser, setNewUser] = useState(

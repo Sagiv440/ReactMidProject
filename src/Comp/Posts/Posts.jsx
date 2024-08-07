@@ -2,9 +2,10 @@ import { useState } from "react";
 import PostsView from "./PostsView";
 import PostsAdd from "./PostAdd";
 
+//Posts component for handling the user posts
 const Posts =({user, posts, add})=>
 {
-    const [Pstate, setPState]  = useState("View")
+    const [Pstate, setPState]  = useState("View") //selector between add new posts and view posts.
 
     return(
         <>

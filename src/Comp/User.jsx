@@ -1,19 +1,25 @@
 import { useState ,useEffect } from "react";
 import OtherData from "./OtherData";
 
-const UserComp = ({ user , dalete ,update , tp }) => {
-    const [showAdd, setShowAdd] = useState(false);
-    const [newUser, setNewUser] = useState();
+//The User Component handle the data of a single user
 
+const UserComp = ({ user , dalete ,update , tp }) => {
+
+    const [showAdd, setShowAdd] = useState(false); // show the extra data
+    const [newUser, setNewUser] = useState(user); // holder for the updated user data.
+
+    //init user component
     useEffect(()=>{
         setNewUser(user);
       },[])
 
+    // delete this user form data base.
     function DeleteMe()
     {
         dalete(user.id);
     }
 
+    // update user data in base data base.
     function UpdateMe()
     {
         update(user.id, newUser);
@@ -29,7 +35,7 @@ const UserComp = ({ user , dalete ,update , tp }) => {
             <button onClick={DeleteMe}>Delete</button>
 
             {showAdd && <div>
-                <br /><OtherData other={user.address} /><br />
+                <br /><OtherData user={user} update={setNewUser} /><br />
             </div>}
             <br />
         </>

@@ -10,24 +10,32 @@ const USERS_URL = "https://jsonplaceholder.typicode.com/users";
 const POSTS_URL = "https://jsonplaceholder.typicode.com/posts";
 const TODOS_URL = "https://jsonplaceholder.typicode.com/todos";
 
+/*
+Main component of the application.
+*/
+
 function App() {
-  const [users, setUsers] = useState([]);
-  const [posts, setPosts] = useState([]);
-  const [todos, setTodos] = useState([]);
+  const [users, setUsers] = useState([]); // save all users data
+  const [posts, setPosts] = useState([]); // save all posts data
+  const [todos, setTodos] = useState([]); // save all todos data
 
-  const [state, setState] = useState("");
-  const [search, setSearch] = useState("");
+  const [state, setState] = useState(""); // used to select which window will display at any time
+  const [search, setSearch] = useState(""); // veriable for holding the search prompt 
 
-  const [curUser, setCurUser] = useState({});
+  const [curUser, setCurUser] = useState({}); // hold the current user been exament in the window
 
+  // get all the todos that belong to the curent user (only updateds if user change)
   const curTodos = useMemo(()=>{
     return todos.filter((e) => e.userId == curUser.id)
   })
+
+   // get all the posts that belong to the curent user (only updateds if user change)
   const curPosts = useMemo(()=>{
     return posts.filter((e) => e.userId == curUser.id)
   })
 
 
+  //Get user data form the server and init the app.
   useEffect(()=>{
     const getUsers = async()=>{
         const {data} = await getAll(USERS_URL);
@@ -47,11 +55,13 @@ function App() {
     getTodos();
   },[])
 
+  //Fillter the results based on the search prompt.
   const serchedUsers = useMemo(()=> 
     users.filter((user) => {
     return (user.name.toLowerCase().includes(search.toLowerCase()) || user.email.toLowerCase().includes(search.toLowerCase()))
   }),[search, users])
 
+  //Delete a user and it's assosiated data by id.
   const DeleteUser=(id)=>
   {
     const NewUsers = users.filter((e)=>e.id !== id);
@@ -65,60 +75,63 @@ function App() {
     setState("");
   }
 
-    const AddUser=(user)=>
-    {
-      let Id = NewId(users);
-      let Nuser = {...user,id: Id+1};
+  //Add a new user.
+  const AddUser=(user)=>
+  {
+    let Id = NewId(users);
+    let Nuser = {...user,id: Id+1};
 
-      setUsers([...users, Nuser]);
-      setState("");
-    }
+    setUsers([...users, Nuser]);
+    setState("");
+  }
 
-    const Cancel =()=>
-    {
-      setState("");
-    }
+  const Cancel =()=>
+  {
+    setState("");
+  }
 
-    const UpdateUser=(id, user)=>
+  // Update user data. 
+  const UpdateUser=(id, user)=>
+  {
+    let uss = [...users];
+    for(let i = 0; i < uss.length; i++)
     {
-      let uss = [...users];
-      for(let i = 0; i < uss.length; i++)
+      if(uss[i].id == id)
       {
-        if(uss[i].id == id)
-        {
-          uss[i] = user; 
-          break;
-        }
+        uss[i] = user; 
+        break;
       }
-      updateItem(USERS_URL, id, user)
-      setUsers(uss);
     }
+    updateItem(USERS_URL, id, user)
+    setUsers(uss);
+  }
 
-    const UpdateTask=(task, add=false)=>
+  //Update/Add a task  and the tasklist (callback)
+  const UpdateTask=(task, add=false)=>
+    {
+      let tss = [...todos];
+      let tsk = {...task};
+      if(!add)
       {
-        let tss = [...todos];
-        let tsk = {...task};
-        if(!add)
+        for(let i = 0; i < tss.length; i++)
         {
-          for(let i = 0; i < tss.length; i++)
+          if(tss[i].id == tsk.id)
           {
-            if(tss[i].id == tsk.id)
-            {
-              tss[i] = tsk; 
-              break;
-            }
+            tss[i] = tsk; 
+            break;
           }
-          setTodos(tss);
-          updateItem(TODOS_URL, tsk.id, tsk);
         }
-        else
-        {
-          tsk = {...tsk,id: NewId(todos)};
-          setTodos([...tss, tsk]);
-          addItem(TODOS_URL, tsk);
-        }
+        setTodos(tss);
+        updateItem(TODOS_URL, tsk.id, tsk);
       }
-
+      else
+      {
+        tsk = {...tsk,id: NewId(todos)};
+        setTodos([...tss, tsk]);
+        addItem(TODOS_URL, tsk);
+      }
+    }
+    // Add a new post (callback)
     const AddPost=(post)=>
       {
         let pst = {...post};
@@ -127,13 +140,14 @@ function App() {
         addItem(POSTS_URL, pst);
       }
 
+    //Open the Tasks and posts window (callback)
     const TaskAndPosts=(user)=>
     {
       setCurUser(user);
       setState("TasksAndPosts")
     }
 
-
+    // color the border based on users complited tasks.
     function checkTodo(id)
     {
         const mytodos = todos.filter((e) => e.userId == id)

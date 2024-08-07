@@ -1,13 +1,15 @@
 My Vite & React Mid Project 
 =====
 
-A simple data management app made for highlight skills in front end development.
+This app is designed to highlight skills in front-end development.
 
-# Libraries used 
-1. axios - for getting and sending data to the server ( for this project I use: [jsonplaceholder](https://jsonplaceholder.typicode.com/) act as my server )
-2. useMemo - for redusing load on the browser.
+<h2>Libraries And Hooks Used </h2>
+1. axios - For getting and sending data to the server. For this project, [jsonplaceholder](https://jsonplaceholder.typicode.com/) is used as the server.
+2. useState - For saving the state of components.
+3. useEffect - For running code during changes in the component lifecycle.
+4. useMemo - For reducing render load on the browser.
 
-# Application Components Strucuter
+<h2>Application Components Structure </h2>
 ```
 App.jsx
   |

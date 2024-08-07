@@ -1,9 +1,10 @@
 import { useState , useEffect , useMemo } from 'react';
 import './App.css';
 import UserComp from './Comp/User';
-import { getAll, updateItem } from './utils';
+import { getAll, addItem, updateItem , NewId } from './utils';
 import AddNewUser from './Comp/AddNewUser';
-import Tasks from './Comp/Tasks';
+import Tasks from './Comp/Tasks/Tasks';
+import Posts from './Comp/Posts/Posts';
 
 const USERS_URL = "https://jsonplaceholder.typicode.com/users";
 const POSTS_URL = "https://jsonplaceholder.typicode.com/posts";
@@ -17,13 +18,21 @@ function App() {
   const [state, setState] = useState("");
   const [search, setSearch] = useState("");
 
-  const [curUser, setCurUser] = useState();
-  const [curTodos,setCurTodos] = useState([]);
+  const [curUser, setCurUser] = useState({});
+
+  const curTodos = useMemo(()=>{
+    return todos.filter((e) => e.userId == curUser.id)
+  })
+  const curPosts = useMemo(()=>{
+    return posts.filter((e) => e.userId == curUser.id)
+  })
+
 
   useEffect(()=>{
     const getUsers = async()=>{
         const {data} = await getAll(USERS_URL);
         setUsers(data);
+        setCurUser(data[0]);
     }
     const getPosts = async()=>{
       const {data} = await getAll(POSTS_URL);
@@ -46,19 +55,19 @@ function App() {
   const DeleteUser=(id)=>
   {
     const NewUsers = users.filter((e)=>e.id !== id);
+    const NewPosts = posts.filter((e)=>e.userId !== id);
+    const NewTodos = todos.filter((e)=>e.userId !== id);
+
     setUsers(NewUsers);
+    setTodos(NewTodos);
+    setPosts(NewPosts);
+
+    setState("");
   }
 
     const AddUser=(user)=>
     {
-      let Id = 0;
-      for(let i = 0; i < users.length; i++)
-      {
-        if(users[i].id > Id)
-        {
-          Id = users[i].id;
-        }
-      }
+      let Id = NewId(users);
       let Nuser = {...user,id: Id+1};
 
       setUsers([...users, Nuser]);
@@ -85,30 +94,45 @@ function App() {
       setUsers(uss);
     }
 
-    const UpdateTask=(id, task)=>
+    const UpdateTask=(task, add=false)=>
       {
         let tss = [...todos];
-        for(let i = 0; i < tss.length; i++)
+        let tsk = {...task};
+        if(!add)
         {
-          if(tss[i].id == id)
+          for(let i = 0; i < tss.length; i++)
           {
-            tss[i] = task; 
-            break;
+            if(tss[i].id == tsk.id)
+            {
+              tss[i] = tsk; 
+              break;
+            }
           }
+          setTodos(tss);
+          updateItem(TODOS_URL, tsk.id, tsk);
         }
-        updateItem(TODOS_URL, id, task)
-        
-        setTodos(tss);
+        else
+        {
+          tsk = {...tsk,id: NewId(todos)};
+          setTodos([...tss, tsk]);
+          addItem(TODOS_URL, tsk);
+        }
+      }
 
-        setCurTodos(todos.filter((e) => e.userId == task.userId));
+    const AddPost=(post)=>
+      {
+        let pst = {...post};
+        pst = {...pst,id: NewId(posts)};
+        setPosts([...posts, pst]);
+        addItem(POSTS_URL, pst);
       }
 
     const TaskAndPosts=(user)=>
     {
       setCurUser(user);
-      setCurTodos(todos.filter((e) => e.userId == user.id));
       setState("TasksAndPosts")
     }
+
 
     function checkTodo(id)
     {
@@ -123,39 +147,32 @@ function App() {
         return("Green")
     }
 
-    const SidePage =()=>
-    {
-      switch(state)
-      {
-        case "AddNew":
-          return(<AddNewUser key={'1'} add={AddUser} cancel={Cancel}/>);
-        
-        case "TasksAndPosts":
-          return(<><Tasks key={'2'} user={curUser} tasks={curTodos} mark={UpdateTask}/></>)
-          default:
-          return(<></>);
-      }
-      return(<></>)
-    }
-
 
   return (
     <>
-    <div style={{border:"3px solid"}}>
-    Search <input type="text" onChange={(e)=>setSearch(e.target.value)}/> <button onClick={() => setState("AddNew")} >Add</button><br/>
-
-        <ul>
-          {
-            serchedUsers.map((user)=>{
-              return(<div class={checkTodo(user.id)} style={{ border: "3px solid", width: "95%" }}>
-                <UserComp key={user.id} user={ user } dalete={ DeleteUser } update={ UpdateUser } tp={TaskAndPosts}/>
-              </div>)
-            })
-          }
-        </ul>
-      </div>
+    <div style={{display:'flex', justifyContent: 'space-between', alignItems: 'flex-start'}}>
       <div style={{border:"3px solid"}}>
-      {SidePage()}
+      Search <input type="text" onChange={(e)=>setSearch(e.target.value)}/> <button onClick={() => setState("AddNew")} >Add</button><br/>
+
+          <ul>
+            {
+              serchedUsers.map((user)=>{
+                return(<div class={checkTodo(user.id)} style={{ border: "3px solid"}}>
+                  <UserComp key={user.id} user={ user } dalete={ DeleteUser } update={ UpdateUser } tp={TaskAndPosts}/>
+                </div>)
+              })
+            }
+          </ul>
+        </div>
+        {state != "" && <div style={{border:"3px solid" ,width: "50%"}}>
+          {state=="TasksAndPosts" && <>
+            <Tasks user={curUser} tasks={curTodos} mark={UpdateTask}/><br/>
+            <Posts user={curUser} posts={curPosts} add={AddPost}/>
+          </>}
+          {state=="AddNew" &&
+          <AddNewUser key={1} add={AddUser} cancel={Cancel}/>
+          }
+        </div>}
       </div>
     </>
   )

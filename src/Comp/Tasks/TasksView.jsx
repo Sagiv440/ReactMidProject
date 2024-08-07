@@ -1,17 +1,18 @@
 import { useState, useEffect } from "react";
 
-const Tasks=({user, tasks , mark})=>
+const TasksView=({user, tasks , mark , select})=>
 {
     const [todos, setTodos] = useState([]);
+    const [addShow, setAddShow] = useState(false);
 
     useEffect(()=>{
-        setTodos([...tasks])
-    },[user])
+       console.log(tasks);
+    },[tasks])
 
     const Mark=(task , state)=>
     {
         let tsk = {...task, completed: state};
-        let nTodos = [...todos];
+        let nTodos = [...tasks];
         for(let i = 0; i < nTodos.length; i++)
             {
               if(nTodos[i].id == task.id)
@@ -21,17 +22,17 @@ const Tasks=({user, tasks , mark})=>
               }
             }
         setTodos(nTodos);
-        mark(task.id, tsk);
+        mark(tsk);
     }
     return(
         <>
-        User: {user.name}
-        <button>Add</button><br/>
+        Todos - User: {user.name}
+        <button onClick={()=>select("Add")}>Add</button><br/>
         <ul>
         {
-            todos.map((task)=>
+            tasks.map((task)=>
             {
-                return(<div style={{border:"3px solid", width:"90%"}}>
+                return(<div key={task.id} style={{border:"3px solid", width:"90%"}}>
                     Title: {task.title} <br/>
                     Completed: {task.completed? " true ": " false "}
                     {!task.completed && <button onClick={()=>Mark(task, true)}>Mark Completed</button>}
@@ -43,4 +44,4 @@ const Tasks=({user, tasks , mark})=>
         </>
     )
 }
-export default Tasks;
+export default TasksView;

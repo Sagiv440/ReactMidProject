@@ -10,4 +10,18 @@ const updateItem = (url, id, obj) => axios.put(`${url}/${id}`, obj);
 
 const deleteItem = (url, id) => axios.delete(`${url}/${id}`);
 
-export { getAll, getById, addItem, updateItem, deleteItem };
+const NewId = (data)=>
+    {
+      let Id = 0;
+      for(let i = 0; i < data.length; i++)
+        {
+          if(data[i].id > Id)
+          {
+            Id = data[i].id;
+          }
+        }
+      return Id + 1;
+    }
+
+export { getAll, getById, addItem, updateItem, deleteItem , NewId };
+

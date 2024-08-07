@@ -1,8 +1,27 @@
-# React + Vite
+My Vite & React Mid Project 
+=====
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple data management app made for highlight skills in front end development.
 
-Currently, two official plugins are available:
+# Libraries used 
+1. axios - for getting and sending data to the server ( for this project I use: [jsonplaceholder](https://jsonplaceholder.typicode.com/) act as my server )
+2. useMemo - for redusing load on the browser.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# Application Components Strucuter
+```
+App.jsx
+  |
+  |-->AddNewUser.jsx
+  |
+  |-->User.jsx
+  |      |
+  |      |-->OtherData.jsx
+  |
+  |--> Tasks.jsx
+  |      |-->TasksView.jsx
+  |      |-->TaskAdd.jsx
+  |
+  |--> Posts.jsx
+         |-->PostsView.jsx
+         |-->PostAdd.jsx
+```

@@ -1,8 +1,29 @@
-# React + Vite
+My Vite & React Mid Project 
+=====
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This app is designed to highlight skills in front-end development.
 
-Currently, two official plugins are available:
+# Libraries And Hooks Used 
+1. axios - For getting and sending data to the server. For this project, [jsonplaceholder](https://jsonplaceholder.typicode.com/) is used as the server.
+2. useState - For saving the state of components.
+3. useEffect - For running code during changes in the component lifecycle.
+4. useMemo - For reducing render load on the browser.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# Application Components Structure 
+```
+App.jsx
+  |
+  |-->AddNewUser.jsx
+  |
+  |-->User.jsx
+  |      |
+  |      |-->OtherData.jsx
+  |
+  |--> Tasks.jsx
+  |      |-->TasksView.jsx
+  |      |-->TaskAdd.jsx
+  |
+  |--> Posts.jsx
+         |-->PostsView.jsx
+         |-->PostAdd.jsx
+```

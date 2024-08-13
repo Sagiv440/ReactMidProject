@@ -27,3 +27,14 @@ App.jsx
          |-->PostsView.jsx
          |-->PostAdd.jsx
 ```
+# Main scene:
+  <img src="https://github.com/Sagiv440/ReactMidProject/blob/master/media/UserMenu_Explaned.PNG?raw=true"/><br/>
+  
+<h4>Search:</h4> 
+  <img src="https://github.com/Sagiv440/ReactMidProject/blob/master/media/Search%20User.PNG?raw=true"/><br/>
+  
+<h4>Other Data:</h4> 
+  <img src="https://github.com/Sagiv440/ReactMidProject/blob/master/media/ExtraData.PNG?raw=true"/><br/>
+  
+<h4>Todos and Posts:</h4> 
+  <img src="https://github.com/Sagiv440/ReactMidProject/blob/master/media/ShowTodo_Posts.PNG?raw=true"/><br/>

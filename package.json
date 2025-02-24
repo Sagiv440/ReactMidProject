@@ -1,6 +1,7 @@
 {
   "name": "reactmidproject",
   "private": true,
+  "homepage": "https://sagiv440.github.io/ReactMidProject/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {

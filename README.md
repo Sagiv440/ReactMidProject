@@ -1,8 +1,8 @@
 My Vite & React Mid Project 
 =====
 
-This app is designed to highlight skills in front-end development.
-linke to working [example](https://sagiv440.github.io/ReactMidProject/)
+This app is designed to highlight skills in front-end development.<br/>
+linke to working example: [here](https://sagiv440.github.io/ReactMidProject/)
 
 # Libraries And Hooks Used 
 1. axios - For getting and sending data to the server. For this project, [jsonplaceholder](https://jsonplaceholder.typicode.com/) is used as the server.

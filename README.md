@@ -1,6 +1,6 @@
-My Vite & React Mid Project 
+Database Management Webpage 
 =====
-
+A simple web interface for managing data on a web server, built with React and utilizing Axios for HTTP communication.<br/>
 This app is designed to highlight skills in front-end development.<br/>
 linke to working example: [here](https://sagiv440.github.io/ReactMidProject/)
 
